@@ -4,35 +4,48 @@ import json
 from bs4 import BeautifulSoup
 
 
-# def get_movie(url):
-#     r = requests.get(url, headers={'Accept-Language': 'en-US,en;q=0.5'})
-#
-#     soup = BeautifulSoup(r.text, "html.parser")
-#     movie_info = json.loads("".join(soup.find("script", {"type": "application/ld+json"}).contents))
-#     movie = {}
-#     if movie_info["@type"] == "Movie" or movie_info["@type"] == "TVSeries":
-#         movie["title"] = movie_info["name"]
-#         movie["description"] = movie_info["description"]
-#         print(movie)
-#     else:
-#         print("Invalid movie page!")
-#
-#
-# user_input = input()
-# if "https://www.imdb.com/title/" not in user_input:
-#     print("Invalid movie page!")
-# else:
-#     get_movie(user_input)
+import requests
+import string
 
-user_input = input()
-file = open('source.html', 'wb')
-try:
-    r = requests.get(user_input)
+from bs4 import BeautifulSoup
+
+
+def main():
+    saved_articles = []
+    links = []
+    r = requests.get("https://www.nature.com/nature/articles")
     if r.status_code == 200:
         page_content = r.content
-        file.write(page_content)
-        print("Content saved.")
+        soup = BeautifulSoup(page_content, "html.parser")
+        articles = soup.find_all('article')
+        for a in articles:
+            span_tags = a.find_all("span", {"class": "c-meta__type"})
+            for t in span_tags:
+                if t.text == "News":
+                    link = a.find('a')
+                    links.append(link.get('href'))
+        # print(links)
+        for a in links:
+            r = requests.get("https://www.nature.com" + a)
+            soup = BeautifulSoup(r.content, "html.parser")
+            title = soup.find('title').text
+            title = title.translate(str.maketrans('', '', string.punctuation))
+            title = title.replace(' ', '_')
+            body = soup.find('div', {"class": "c-article-body"})
+            body = body.text.strip()
+            # body = body.replace("\n", "")
+            filename = title + ".txt"
+            file = open(filename, "wb")
+            file.write(body.encode('utf-8'))
+            file.close()
+            # print(title)
+            # print(body)
+            saved_articles.append(filename)
     else:
         print("The URL returned " + str(r.status_code) + "!")
-finally:
-    file.close()
+
+    print(saved_articles)
+
+
+if __name__ == "__main__":
+    main()

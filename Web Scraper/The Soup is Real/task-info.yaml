@@ -134,6 +134,21 @@ files:
     </body>
     </html>
   learner_created: true
+- name: First_video_and_sounds_from_China’s_Mars_rover_intrigue_scientists.txt
+  visible: true
+  learner_created: true
+- name: Landmark_CRISPR_trial_shows_promise_against_deadly_disease.txt
+  visible: true
+  learner_created: true
+- name: Controversial_Alzheimers_drug_approval_could_impact_other_diseases.txt
+  visible: true
+  learner_created: true
+- name: Deadly_Myanmar_mine_disaster_caused_by_poor_planning_say_data_sleuths.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/145/stages/784/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Wed, 30 Jun 2021 00:21:12 UTC
 record: -1
