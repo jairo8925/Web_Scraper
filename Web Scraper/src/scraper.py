@@ -10,7 +10,9 @@ website = "https://www.nature.com/nature/articles"
 def main():
 
     saved_articles = []
+    print("Number of pages:")
     pages = int(input())
+    print("Type of article:")
     article_type = input()
     for i in range(1, pages + 1):
         req = requests.get(website, params={'page': i})
